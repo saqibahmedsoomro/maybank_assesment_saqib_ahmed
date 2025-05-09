@@ -54,6 +54,10 @@ This project is a Spring Boot application designed for batch processing and mana
    ```
    src/main/resources/dataSource.txt
    ```
+4. Run sql Mannualy to load spring batch tables into database:
+   ```
+   src/main/resources/schema/batchSchema.sql
+   ```
 
 4. Build and run the application:
    ```bash
