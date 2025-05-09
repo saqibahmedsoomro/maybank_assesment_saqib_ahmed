@@ -39,50 +39,57 @@ This project is a Spring Boot application designed for batch processing and mana
    ```bash
    git clone https://github.com/your-username/maybank-assessment.git
    cd maybank-assessment
+   ```
 
-
-2. Update application.properties with your MySQL credentials:
-   ```code
+2. Update `application.properties` with your MySQL credentials:
+   ```properties
    spring.datasource.url=jdbc:mysql://localhost:3306/maybank
    spring.datasource.username=root
    spring.datasource.password=your_password
    spring.jpa.hibernate.ddl-auto=update
    spring.batch.initialize-schema=always
+   ```
 
 3. Place your batch file in:
-     ```css
-     src/main/resources/dataSource.txt
+   ```
+   src/main/resources/dataSource.txt
+   ```
 
 4. Build and run the application:
-    ```css
-    ./gradlew bootRun
+   ```bash
+   ./gradlew bootRun
+   ```
 
-6. Access Swagger:
-    ```css
-    http://localhost:8080/swagger-ui/index.html
+5. Access Swagger:
+   ```
+   http://localhost:8080/swagger-ui/index.html
+   ```
 
 ## Testing
 
-1. Run it using:
-   ```bash
-   ./gradlew test
+Run unit tests using:
+```bash
+./gradlew test
+```
 
-### Folder Structure
-1. Folder Structure
-   ```bash
-   ├── config               # Spring Batch config
-   ├── controller           # REST Controllers
-   ├── dto                  # Data Transfer Objects
-   ├── entity               # JPA Entities
-   ├── repository           # JPA Repositories
-   ├── service              # Business logic
-   ├── test                 # Unit tests
-   └── resources
-       └── dataSource.txt   # Sample transaction data
+## Folder Structure
 
+```
+├── config               # Spring Batch config
+├── controller           # REST Controllers
+├── dto                  # Data Transfer Objects
+├── entity               # JPA Entities
+├── repository           # JPA Repositories
+├── service              # Business logic
+├── test                 # Unit tests
+└── resources
+    └── dataSource.txt   # Sample transaction data
+```
 
-### Author
-Saqib Ahmed
+## Author
 
-### License
+- Saqib Ahmed
+
+## License
+
 This project is for educational and assessment purposes only.
