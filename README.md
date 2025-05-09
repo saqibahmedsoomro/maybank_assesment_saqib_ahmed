@@ -78,9 +78,7 @@ Run unit tests using:
 ├── config               # Spring Batch config
 ├── controller           # REST Controllers
 ├── dto                  # Data Transfer Objects
-├── entity               # JPA Entities
 ├── repository           # JPA Repositories
-├── service              # Business logic
 ├── test                 # Unit tests
 └── resources
     └── dataSource.txt   # Sample transaction data
