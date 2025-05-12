@@ -1,15 +1,12 @@
 package org.maybak.demo;
 
 import org.junit.jupiter.api.Test;
-import org.maybak.demo.controller.TransactionController;
-import org.maybak.demo.dto.TransactionDto;
+import org.maybak.demo.entity.TransactionEntity;
 import org.maybak.demo.repository.TransactionRepository;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -36,14 +33,14 @@ class TransactionControllerTest {
         Long transactionId = 1L;
         String newDescription = "Updated Description";
 
-        TransactionDto existingTransaction = new TransactionDto();
+        TransactionEntity existingTransaction = new TransactionEntity();
         existingTransaction.setId(transactionId);
         existingTransaction.setDescription("Old Description");
 
         when(transactionRepository.findById(transactionId))
                 .thenReturn(Optional.of(existingTransaction));
 
-        when(transactionRepository.save(any(TransactionDto.class)))
+        when(transactionRepository.save(any(TransactionEntity.class)))
                 .thenReturn(existingTransaction);
 
         mockMvc.perform(put("/api/transactions/{id}", transactionId)

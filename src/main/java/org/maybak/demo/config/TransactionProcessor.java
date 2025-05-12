@@ -1,12 +1,12 @@
 package org.maybak.demo.config;
 
-import org.maybak.demo.dto.TransactionDto;
+import org.maybak.demo.entity.TransactionEntity;
 import org.springframework.batch.item.ItemProcessor;
 
-public class TransactionProcessor implements ItemProcessor<TransactionDto, TransactionDto> {
+public class TransactionProcessor implements ItemProcessor<TransactionEntity, TransactionEntity> {
 
     @Override
-    public TransactionDto process(TransactionDto transaction) throws Exception {
+    public TransactionEntity process(TransactionEntity transaction) throws Exception {
         return transaction;
     }
 }

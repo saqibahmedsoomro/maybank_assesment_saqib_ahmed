@@ -1,7 +1,7 @@
 package org.maybak.demo.config;
 
 import lombok.AllArgsConstructor;
-import org.maybak.demo.dto.TransactionDto;
+import org.maybak.demo.entity.TransactionEntity;
 import org.maybak.demo.repository.TransactionRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -33,8 +33,8 @@ public class SpringBatchConfig {
     private TransactionRepository repository;
 
     @Bean
-    public FlatFileItemReader<TransactionDto> reader() {
-        FlatFileItemReader<TransactionDto> transactionReader = new FlatFileItemReader<>();
+    public FlatFileItemReader<TransactionEntity> reader() {
+        FlatFileItemReader<TransactionEntity> transactionReader = new FlatFileItemReader<>();
         transactionReader.setResource(new ClassPathResource("dataSource.txt"));
         transactionReader.setName("transactions");
         transactionReader.setLinesToSkip(1);
@@ -42,8 +42,8 @@ public class SpringBatchConfig {
         return transactionReader;
     }
 
-    private LineMapper<TransactionDto> lineMapper() {
-        DefaultLineMapper<TransactionDto> lineMapper = new DefaultLineMapper<>();
+    private LineMapper<TransactionEntity> lineMapper() {
+        DefaultLineMapper<TransactionEntity> lineMapper = new DefaultLineMapper<>();
 
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setDelimiter("|");
@@ -62,16 +62,16 @@ public class SpringBatchConfig {
         return new TransactionProcessor();
     }
     @Bean
-    public RepositoryItemWriter<TransactionDto> writer() {
-        RepositoryItemWriter<TransactionDto> writer = new RepositoryItemWriter<>();
+    public RepositoryItemWriter<TransactionEntity> writer() {
+        RepositoryItemWriter<TransactionEntity> writer = new RepositoryItemWriter<>();
         writer.setRepository(repository);
         writer.setMethodName("save");
         return writer;
     }
     @Bean
-    public Step step1(JobRepository jobRepository, PlatformTransactionManager transactionManager, RepositoryItemWriter<TransactionDto> writer) {
+    public Step step1(JobRepository jobRepository, PlatformTransactionManager transactionManager, RepositoryItemWriter<TransactionEntity> writer) {
         return new StepBuilder("step1", jobRepository)
-                .<TransactionDto, TransactionDto> chunk(10, transactionManager)
+                .<TransactionEntity, TransactionEntity> chunk(10, transactionManager)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer)

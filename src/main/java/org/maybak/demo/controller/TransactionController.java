@@ -1,13 +1,10 @@
 package org.maybak.demo.controller;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.maybak.demo.dto.Description;
-import org.maybak.demo.dto.TransactionDto;
-import org.maybak.demo.repository.TransactionRepository;
+import org.maybak.demo.entity.TransactionEntity;
+import org.maybak.demo.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,12 +16,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class TransactionController {
 
+
         @Autowired
-        TransactionRepository repository;
+        TransactionService service;
 
         @Operation(summary = "Fetch all Transactions, with Pagination and filters")
 		@GetMapping("/api/transactions")
- 		public ResponseEntity< Page<TransactionDto> > getTransactions(
+ 		public ResponseEntity< Page<TransactionEntity> > getTransactions(
                  @RequestParam(defaultValue = "0") int page,
                  @RequestParam(defaultValue = "10") int size,
                  @RequestParam(defaultValue = "") String description,
@@ -32,14 +30,7 @@ public class TransactionController {
                  @RequestParam(defaultValue = "") String accountNumber) {
         try {
                 Pageable pageable = PageRequest.of(page, size);
-                Page<TransactionDto> transactions;
-
-            transactions = repository.search(
-                    description,
-                    accountNumber,
-                    customerId>0?customerId:null,
-                    pageable);
-
+                Page<TransactionEntity> transactions = service.search(description, accountNumber, customerId, pageable);
                 return new ResponseEntity<>(transactions, HttpStatus.OK);
 			}catch(Exception E)
             {
@@ -55,17 +46,8 @@ public class TransactionController {
                 if (description == null || description.isBlank()) {
                     return ResponseEntity.badRequest().body("Description must not be empty.");
                 }
-                Optional<TransactionDto> optional = repository.findById(id);
-                if (optional.isEmpty()) {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body("Transaction with id " + id + " not found.");
-                }
-                TransactionDto transaction = optional.get();
-                transaction.setDescription(description);
-                repository.save(transaction);
-
+                TransactionEntity transaction = service.update(id,description);
                 return ResponseEntity.ok(transaction);
-
             }catch(Exception E)
             {
                 System.out.println("Error encountered : "+E.getMessage());
